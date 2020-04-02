@@ -1,32 +1,17 @@
-# Prerequisites
-*.d
+#include <bits/stdc++.h>
+using namespace std;
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+struct Process_Data
+{
+	int Num;
+	int P_id;  //Process Id
+	int Arrival; //Process Arrival Time
+	int Burst; //Process Bruest Time
+	int Priority; //Process Priority
+	int Finish; //Process Finish Time
+	int Remaining; //Process Remaining  Time During Execution
+	int Waiting; //Waiting Time
+	int Start; //Process start Time
+	int Res_time;
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+};
