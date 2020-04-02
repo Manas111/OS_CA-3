@@ -15,3 +15,51 @@ struct Process_Data
 	int Res_time;
 
 };
+
+struct Process_Data current;
+typedef struct Process_Data P_d ;
+
+bool idsort(const P_d& x , const P_d& y)
+{
+	return x.P_id < y.P_id;
+}
+/** Sorting on the base of arrival time if that match then on Priority of Priority also  match than on the base of Process Id**/
+bool arrivalsort( const P_d& x ,const P_d& y)
+{
+	if(x.Arrival < y.arrival)
+		return true;
+	else if(x.Arrival > y.Arrival)
+		return false;
+	if(x.Priority < y.Priority)
+		return true;
+	else if(x.Priority > y.Priority)
+		return false;
+	if(x.P_id < y.P_id)
+		return true;
+
+	return false;
+}
+
+
+bool Numsort( const P_d& x ,const P_d& y)
+{
+	return x.Num < y.Num;
+}
+/*Sorting on the base of Priority if that same then on the base of P_ID*/
+struct comPare
+{
+	bool operator()(const P_d& x ,const P_d& y)
+	{
+		if( x.Priority > y.Priority )
+			return true;
+		else if( x.Priority < y.Priority )
+			return false;
+		if( x.P_id > y.P_id )
+			return true;
+
+		return false;
+		
+	}
+	
+};
+
