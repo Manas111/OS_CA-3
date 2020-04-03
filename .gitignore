@@ -26,7 +26,7 @@ bool idsort(const P_d& x , const P_d& y)
 /** Sorting on the base of arrival time if that match then on Priority of Priority also  match than on the base of Process Id**/
 bool arrivalsort( const P_d& x ,const P_d& y)
 {
-	if(x.Arrival < y.arrival)
+	if(x.Arrival < y.Arrival)
 		return true;
 	else if(x.Arrival > y.Arrival)
 		return false;
@@ -95,8 +95,166 @@ int main()
 		temp.Arrival = Arrival;
 		temp.Burst = Burst;
 		temp.Remaining = Burst;
-		temp.Pid = Pid;
+		temp.P_id = P_id;
 		temp.Priority = Priority;
 		input.push_back(temp);
 	}
+	input_copy = input;
+	sort( input.begin(), input.end(), arrivalsort );
+    total_exection_time = total_exection_time + input[0].Arrival;
+    for( i= 0 ;i< n; i++ )
+    {
+    	if( total_exection_time >= input[i].Arrival )
+    	{
+    		total_exection_time = total_exection_time +input[i].Burst;
+    	}
+    	else
+    	{
+    		int diff = (input[i].Arrival - total_exection_time);
+    		total_exection_time = total_exection_time + diff + Burst;
+
+    	}
+    }
+
+	int Ghant[total_exection_time]={0}; //Ghant Chart
+	for( i= 0; i< total_exection_time; i++ )
+	{
+		Ghant[i]=-1;
+	}
+	//cout<<"total_exection_time : "<<total_exection_time<<endl;
+
+	priority_queue < P_d ,vector<Process_Data> ,comPare> pq; //Priority Queue PQ
+
+	queue< P_d > rq; //Round Robin Queue RQ
+	int cpu_state = 0; //idle if 0 then Idle if 1 the Busy
+	int quantum = 4 ; //Time Quantum
+	current.P_id = -2;
+	current.Priority = 999999;
+
+	for ( clock = 0; clock< total_exection_time; clock++ )
+	{
+		/**Insert the process with same Arrival time in Priority Queue**/
+		for( int j = 0; j< n ; j++ )
+		{
+			if(clock == input[j].Arrival)
+			{
+				pq.push(input[j]);
+			}
+		}
+		
+
+		if(cpu_state == 0) //If CPU idle
+		{
+			if(!pq.empty())
+			{
+				current = pq.top();
+				cpu_state = 1;
+				pq_process = 1;
+				pq.pop();
+				quantum = 4; 
+			}
+			else if(!rq.empty())
+			{
+				current = rq.front();
+				cpu_state = 1;
+				rq_process = 1;
+				rq.pop();
+				quantum = 4;
+			}
+		}
+		else if(cpu_state == 1) //If cpu has any procss
+		{
+			if(pq_process == 1 && (!pq.empty()))
+			{
+				if(pq.top().Priority < current.Priority ) //If new process has high priority
+				{
+					rq.push(current); //push current in RQ
+					current = pq.top();
+					pq.pop();
+					quantum = 4; 
+				}
+			}
+			else if(rq_process == 1 && (!pq.empty())) //If process is from RQ and new process come  in PQ
+			{
+				rq.push(current);
+				current = pq.top();
+				pq.pop();
+				rq_process = 0;
+				pq_process = 1;
+				quantum = 4 ;
+			}
+		}
+		if(current.P_id != -2) // Process Execution
+		{
+			current.Remaining--;
+			quantum--;
+			Ghant[clock] = current.P_id;
+			if(current.Remaining == 0) //If process Finish
+			{
+				cpu_state = 0 ;
+				quantum = 4 ;
+				current.P_id = -2;
+				current.Priority = 999999;
+				rq_process = 0;
+				pq_process = 0;
+			}
+			else if(quantum == 0 ) //If time Qunatum of a current running process Finish
+			{
+				rq.push(current);
+				current.P_id = -2;
+				current.Priority = 999999;
+				rq_process = 0;
+				pq_process = 0;
+				cpu_state=0;
+
+			}
+
+		}
+		
+	}
+
+
+	sort( input.begin(), input.end(), idsort );
+	
+	for(int i=0;i<n;i++)
+	{
+		for(int k=total_exection_time;k>=0;k--)
+		{
+			if(Ghant[k]==i+1)
+			{
+				input[i].Finish=k+1;
+				break;
+
+			}
+		}
+	}
+	for(int i=0;i<n;i++)
+	{
+		for(int k=0;k<total_exection_time;k++)
+		{
+
+			if(Ghant[k]==i+1)
+			{
+				input[i].Start=k;
+				break;
+			}
+		}
+	}
+	
+	sort( input.begin(), input.end(), Numsort );
+
+	for(int i=0;i<n;i++)
+	{
+		input[i].Res_time=input[i].Start-input[i].Arrival;
+		input[i].Waiting=(input[i].Finish-input[i].Arrival)-input[i].Burst;
+
+	}
+	
+	for(int i=0;i<n;i++)
+	{
+		cout<<input[i].P_id<<" "<<input[i].Res_time<<" "<<input[i].Finish<<" "<<input[i].Waiting<<endl;
+		
+	}	
+	return 0;
+
 }
