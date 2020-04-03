@@ -62,4 +62,13 @@ struct comPare
 	}
 	
 };
+/**To check the Input **/
+void my_check(vector<P_d> mv)
+{
+	for(unsigned int i= 0; i < mv.size() ;i++)
+	{
+		cout<<" P_id :"<<mv[i].P_id<<" Arrival : "<<mv[i].Arrival<<" Burst : "<<mv[i].Burst<<" Priority : "
+		<<mv[i].Priority<<endl;
+	}
 
+}
