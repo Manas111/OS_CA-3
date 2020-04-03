@@ -7,6 +7,5 @@ For a Fixed priority preemptive Scheduling (Queue 1), the Priority 0 is highest 
 
 All the processes in second level queue will complete their execution according to round robin scheduling.
 Consider:-
-----------
 1. Queue 2 will be processed after Queue 1 becomes empty.
 2. Priority of Queue 2 has lower priority than in Queue 1.
