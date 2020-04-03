@@ -72,3 +72,31 @@ void my_check(vector<P_d> mv)
 	}
 
 }
+int main()
+{
+	int i;
+	vector< P_d > input;
+	vector<P_d> input_copy;
+	P_d temp;
+	int pq_process = 0; // for PQ process
+	int rq_process = 0; // for RQ process
+	int Arrival;
+	int Burst;
+	int P_id;
+	int Priority;
+	int n;
+	int clock;
+	int total_exection_time = 0;
+	cin>>n;
+	for( i= 0; i< n; i++ )
+	{
+		cin>>P_id>>Arrival>>Burst>>Priority;
+		temp.Num = i+1;
+		temp.Arrival = Arrival;
+		temp.Burst = Burst;
+		temp.Remaining = Burst;
+		temp.Pid = Pid;
+		temp.Priority = Priority;
+		input.push_back(temp);
+	}
+}
